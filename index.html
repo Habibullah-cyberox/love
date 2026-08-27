@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="theme-color" content="#1a0512" />
+    <title>Our Love Story</title>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Quicksand:wght@300;400;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+    <!-- Audio -->
+    <audio id="audioPlayer" loop></audio>
+
+    <!-- Music Player -->
+    <div class="music" id="musicBox" style="display:none;">
+        <button class="m-btn" id="mBtn" onclick="toggleMusic()" title="Play/Pause">▶</button>
+        <div class="m-info"><span id="mTitle">Select Song</span><span style="color:rgba(255,255,255,0.5);font-size:0.65rem;font-weight:400;">Tap to play</span></div>
+        <div class="m-viz paused" id="mViz"><div class="m-bar"></div><div class="m-bar"></div><div class="m-bar"></div><div class="m-bar"></div><div class="m-bar"></div></div>
+        <button class="m-btn" style="width:30px;height:30px;font-size:0.7rem;background:rgba(255,255,255,0.1);" onclick="toggleSongMenu()" title="Songs">♪</button>
+        <div class="song-select" id="songMenu">
+            <div class="song-opt active" onclick="changeSong(0)">♪ Tum Hi Ho</div>
+            <div class="song-opt" onclick="changeSong(1)">♪ Sitaare</div>
+        </div>
+    </div>
+
+    <!-- Floating BG -->
+    <div class="float-bg" id="floatBg"></div>
+
+    <!-- Global Flower Canvas -->
+    <canvas id="flowerCanvas"></canvas>
+
+    <!-- P1: LOADING -->
+    <div class="page active" id="p1">
+        <div class="bg"></div><div class="bg-shimmer"></div><div class="petal-bg" id="petal1"></div><div class="stars"></div>
+        <div class="loader-heart"></div>
+        <div class="title">Our Love Story</div>
+        <div class="loadbar"><div class="loadbar-fill"></div></div>
+        <p style="color:rgba(255,255,255,0.35);font-size:0.85rem;margin-top:0.4rem;z-index:2;">Loading memories...</p>
+    </div>
+
+    <!-- P2: QUESTION -->
+    <div class="page" id="p2">
+        <div class="bg"></div><div class="bg-shimmer"></div><div class="petal-bg" id="petal2"></div><div class="stars"></div>
+        <div class="glass">
+            <div style="font-size:clamp(2.5rem,10vw,4rem);margin-bottom:0.4rem;">💕</div>
+            <div class="title" style="font-size:clamp(2rem,7vw,3rem);margin-bottom:0.6rem;">Do You Love Me?</div>
+            <p class="subtitle">My heart beats only for you...</p>
+            <button class="btn" onclick="goTo(3)">Yes, Forever 💖</button>
+        </div>
+    </div>
+
+    <!-- P3: HEART -->
+    <div class="page" id="p3">
+        <div class="bg"></div><div class="bg-shimmer"></div><div class="petal-bg" id="petal3"></div>
+        <canvas id="heartCanvas" class="layer"></canvas>
+        <div style="position:relative;z-index:3;pointer-events:none;margin:auto;">
+            <div class="title" style="font-size:clamp(2rem,8vw,3.2rem);text-shadow:0 0 40px rgba(255,107,157,0.8);">Yes, I Love You</div>
+            <p class="subtitle">You are my today and all of my tomorrows.</p>
+        </div>
+        <button class="btn" onclick="goTo(4)" style="position:relative;z-index:3;margin-top:2rem;">Watch Our Love Grow 🌱</button>
+    </div>
+
+    <!-- P4: TREE -->
+    <div class="page page-scroll" id="p4">
+        <div class="bg"></div><div class="bg-shimmer"></div><div class="petal-bg" id="petal4"></div>
+        <canvas id="treeFlowerCanvas"></canvas>
+        <div id="treeExtraFloats" style="position:absolute;inset:0;pointer-events:none;z-index:0;overflow:hidden;"></div>
+        <canvas id="treeCanvas" class="layer"></canvas>
+
+        <div class="tree-side-img ts-left ts-1" onclick="openTreeModal(0)">
+            <img src="image/pic1.jpg" alt="" />
+            <div class="tree-msg-bubble" id="tmsg-0"></div>
+        </div>
+        <div class="tree-side-img ts-left ts-2" onclick="openTreeModal(1)">
+            <img src="image/pic2.jpg" alt="" />
+            <div class="tree-msg-bubble" id="tmsg-1"></div>
+        </div>
+        <div class="tree-side-img ts-left ts-3" onclick="openTreeModal(2)">
+            <img src="image/pic3.jpg" alt="" />
+            <div class="tree-msg-bubble" id="tmsg-2"></div>
+        </div>
+        <div class="tree-side-img ts-left ts-4" onclick="openTreeModal(3)">
+            <img src="image/pic4.jpg" alt="" />
+            <div class="tree-msg-bubble" id="tmsg-3"></div>
+        </div>
+        <div class="tree-side-img ts-right ts-5" onclick="openTreeModal(4)">
+            <img src="image/pic5.jpg" alt="" />
+            <div class="tree-msg-bubble" id="tmsg-4"></div>
+        </div>
+        <div class="tree-side-img ts-right ts-6" onclick="openTreeModal(5)">
+            <img src="image/pic6.jpg" alt="" />
+            <div class="tree-msg-bubble" id="tmsg-5"></div>
+        </div>
+        <div class="tree-side-img ts-right ts-7" onclick="openTreeModal(6)">
+            <img src="image/pic7.jpg" alt="" />
+            <div class="tree-msg-bubble" id="tmsg-6"></div>
+        </div>
+        <div class="tree-side-img ts-right ts-8" onclick="openTreeModal(7)">
+            <img src="image/pic8.jpg" alt="" />
+            <div class="tree-msg-bubble" id="tmsg-7"></div>
+        </div>
+
+        <div style="position:absolute;top:6%;left:50%;transform:translateX(-50%);z-index:3;text-align:center;pointer-events:none;width:90%;">
+            <div class="title" style="font-size:clamp(1.4rem,5vw,2.2rem);">Our Love Grows</div>
+            <p style="color:rgba(255,255,255,0.45);font-size:0.8rem;margin-top:0.2rem;">Deeper roots, stronger branches...</p>
+        </div>
+
+        <div id="treeMsg" style="position:absolute;bottom:10%;left:50%;transform:translateX(-50%);z-index:3;font-family:'Great Vibes';font-size:clamp(1.4rem,4.5vw,2.2rem);color:var(--gold);text-shadow:0 0 20px rgba(255,215,0,0.5);opacity:0;transition:opacity 2s;">luv u 🧡</div>
+        <button class="btn" id="treeBtn" onclick="goTo(5)" style="position:absolute;bottom:3%;left:50%;transform:translateX(-50%);z-index:3;opacity:0;transition:opacity 1s;">See Our Garden 🌸</button>
+    </div>
+
+    <!-- TREE MODAL -->
+    <div class="tree-modal" id="treeModal" onclick="closeTreeModal(event)">
+        <button class="modal-close" onclick="closeTreeModalDirect()">✕</button>
+        <div class="tree-modal-box" onclick="event.stopPropagation()">
+            <div class="tree-modal-img" id="treeModalImg"></div>
+            <div class="tree-modal-text" id="treeModalText"></div>
+        </div>
+    </div>
+
+    <!-- P5: ALBUM -->
+    <div class="page page-scroll" id="p5">
+        <div class="bg"></div><div class="bg-shimmer"></div><div class="petal-bg" id="petal5"></div><div class="stars"></div>
+        <div style="position:relative;z-index:2;text-align:center;margin-bottom:0.4rem;width:100%;flex-shrink:0;padding:0 0.5rem;">
+            <div class="title" style="font-size:clamp(1.6rem,6vw,2.2rem);">Our Love Album</div>
+            <p style="color:rgba(255,255,255,0.45);font-size:0.8rem;">Every picture tells our story...</p>
+        </div>
+        <div class="album" id="albumGrid"></div>
+        <div id="albumQ" style="display:none;margin-top:0.5rem;width:100%;max-width:520px;flex-shrink:0;padding:0 0.5rem;">
+            <div class="glass" style="padding:clamp(1rem,3vw,1.8rem);">
+                <div class="title" style="font-size:clamp(1.3rem,5vw,1.8rem);margin-bottom:0.6rem;">Are You Happy With Me?</div>
+                <button class="btn" onclick="goTo(6)">Yes, Completely Happy 💗</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- P6: CAROUSEL -->
+    <div class="page" id="p6">
+        <div class="bg"></div><div class="bg-shimmer"></div><div class="petal-bg" id="petal6"></div>
+        <div style="position:relative;z-index:3;text-align:center;margin-bottom:0.4rem;width:100%;padding:0 0.5rem;">
+            <div class="title" style="font-size:clamp(1.4rem,5vw,2rem);">Our 15 Beautiful Moments</div>
+            <p style="color:rgba(255,255,255,0.45);font-size:0.75rem;margin-top:0.2rem;">Click any photo to see our memory 💕</p>
+        </div>
+        <div class="carousel-wrap"><div class="c-glow"></div><div class="carousel-ring" id="cRing"></div></div>
+        <button class="btn" onclick="goTo(7)" style="position:relative;z-index:3;margin-top:1.2rem;">Enter Our Garden 🌷</button>
+    </div>
+
+    <!-- CAROUSEL MODAL -->
+    <div class="modal" id="modal" onclick="closeModal(event)">
+        <button class="modal-close" onclick="closeModalDirect()">✕</button>
+        <div class="modal-box" onclick="event.stopPropagation()">
+            <div class="modal-img" id="mImg"></div>
+            <div class="modal-text" id="mText"></div>
+        </div>
+    </div>
+
+    <!-- P7: GARDEN -->
+    <div class="page page-scroll" id="p7">
+        <div class="bg"></div><div class="bg-shimmer"></div><div class="petal-bg" id="petal7"></div><div class="stars"></div>
+        <canvas id="gardenCanvas" class="layer"></canvas>
+        <div style="position:absolute;top:5%;left:50%;transform:translateX(-50%);z-index:3;text-align:center;pointer-events:none;width:90%;">
+            <div class="title" style="font-size:clamp(1.6rem,6vw,2.6rem);color:var(--gold);text-shadow:0 0 30px rgba(255,215,0,0.4);">Our Love Garden</div>
+            <p style="color:rgba(255,255,255,0.5);font-size:0.85rem;margin-top:0.2rem;">Where our love blooms forever...</p>
+        </div>
+
+        <!-- Bloom status text -->
+        <div class="garden-bloom-status show" id="gardenBloomStatus">🌸 Flowers are blooming... 🌸</div>
+
+        <div class="garden-row" id="gardenRow">
+            <div class="garden-img" data-idx="0"><img src="image/HMK07296.jpg" alt="" /></div>
+            <div class="garden-img" data-idx="1"><img src="image/HMK07332.jpg" alt="" /></div>
+            <div class="garden-img" data-idx="2"><img src="image/HMK07371.jpg" alt="" /></div>
+            <div class="garden-img" data-idx="3"><img src="image/HMK0.jpg" alt="" /></div>
+            <div class="garden-img" data-idx="4"><img src="image/HMK01.jpg" alt="" /></div>
+            <div class="garden-img" data-idx="5"><img src="image/HMK02.jpg" alt="" /></div>
+            <div class="garden-img" data-idx="6"><img src="image/HMK03.jpg" alt="" /></div>
+            <div class="garden-img" data-idx="7"><img src="image/HMK04.jpg" alt="" /></div>
+            <div class="garden-img" data-idx="8"><img src="image/HMK05.jpg" alt="" /></div>
+        </div>
+        <div class="garden-progress" id="gardenProgress">
+            <span class="label">🌷</span>
+            <span class="dot" data-dot="0"></span>
+            <span class="dot" data-dot="1"></span>
+            <span class="dot" data-dot="2"></span>
+            <span class="dot" data-dot="3"></span>
+            <span class="dot" data-dot="4"></span>
+            <span class="dot" data-dot="5"></span>
+            <span class="dot" data-dot="6"></span>
+            <span class="dot" data-dot="7"></span>
+            <span class="dot" data-dot="8"></span>
+            <span class="label" id="gardenCounter">0/9</span>
+        </div>
+        <button class="btn" id="gardenContinueBtn" onclick="goTo(8)">Continue to Love Rain 💕</button>
+    </div>
+
+    <!-- GARDEN SLIDE MODAL -->
+    <div class="garden-slide-modal" id="gardenSlideModal">
+        <div class="garden-slide-modal-box">
+            <div class="garden-slide-modal-img" id="gardenSlideImg"></div>
+            <div class="garden-slide-modal-text" id="gardenSlideText"></div>
+        </div>
+    </div>
+
+    <!-- GARDEN MANUAL MODAL -->
+    <div class="tree-modal" id="gardenModal" onclick="closeGardenModal(event)">
+        <button class="modal-close" onclick="closeGardenModalDirect()">✕</button>
+        <div class="tree-modal-box" onclick="event.stopPropagation()">
+            <div class="tree-modal-img" id="gardenModalImg"></div>
+            <div class="tree-modal-text" id="gardenModalText"></div>
+        </div>
+    </div>
+
+    <!-- P8: LOVE RAIN -->
+    <div class="page" id="p8">
+        <div class="bg"></div><div class="bg-shimmer"></div><div class="petal-bg" id="petal8"></div>
+        <div style="position:fixed;inset:0;background:rgba(45,10,31,0.25);z-index:4;pointer-events:none;"></div>
+        <div id="loveBox" style="position:fixed;inset:0;pointer-events:none;z-index:5;overflow:hidden;"></div>
+        <div id="rainImgBox" style="position:fixed;inset:0;pointer-events:none;z-index:4;overflow:hidden;"></div>
+        <div style="position:relative;z-index:10;padding:0 1rem;">
+            <div class="title" style="font-size:clamp(1.6rem,6vw,2.8rem);color:var(--gold);text-shadow:0 0 30px rgba(255,215,0,0.5);">A Shower of Love for You</div>
+            <p style="color:rgba(255,255,255,0.6);font-size:clamp(0.8rem,3vw,0.95rem);margin-bottom:1rem;">Every drop carries my affection...</p>
+            <div style="font-family:'Great Vibes';font-size:clamp(1.1rem,3.5vw,1.5rem);color:var(--pink);margin-bottom:1.2rem;text-shadow:0 0 15px rgba(255,107,157,0.4);" id="loveCount">Love drops: 0</div>
+            <button class="btn" id="loveBtn" onclick="startLoveFormation()">Collect the Love & Continue 💖</button>
+        </div>
+    </div>
+
+    <!-- F+R FORMATION CANVAS -->
+    <canvas id="frCanvas"></canvas>
+
+    <!-- COUNTDOWN OVERLAY -->
+    <div id="countdownOverlay">
+        <div class="countdown-text">✨ Love is forming ✨</div>
+        <div class="countdown-number" id="countdownNumber">5</div>
+    </div>
+
+    <!-- P9: FINAL -->
+    <div class="page" id="p9">
+        <div class="bg"></div><div class="bg-shimmer"></div><div class="petal-bg" id="petal9"></div><div class="stars"></div>
+        <div class="end-img"><img src="image/HMK12.jpg" alt="Our Forever" /></div>
+        <div class="letter-container">
+            <div class="final-msg" id="finalMsg"></div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
