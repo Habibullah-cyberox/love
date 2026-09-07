@@ -11,8 +11,40 @@
             let cur = 1;
             const songs = [
                 { file: "audio/Tum-Hi-Ho.mp3", title: "Tum Hi Ho", artist: "Arijit Singh" },
-                { file: "audio/Sitaare-lkkis.mp3", title: "Sitaare", artist: "Ikkis" }
+                { file: "audio/Sitaare - Ikkis .mp3", title: "Sitaare", artist: "Ikkis" }
             ];
+
+            const imageFiles = [
+                'pic1.jpg', 'pic2.jpg', 'pic3.jpg', 'pic4.jpg', 'pic5.jpg', 'pic6.jpg', 'pic7.jpg', 'pic8.jpg',
+                'HMK0.jpg', 'HMK01.jpg', 'HMK02.jpg', 'HMK03.jpg', 'HMK04.jpg', 'HMK05.jpg', 'HMK06.jpg', 'HMK07.jpg',
+                'HMK08.jpg', 'HMK09.jpg', 'HMK10.jpg', 'HMK11.jpg', 'HMK12.jpg', 'HMK13.jpg', 'HMK14.jpg', 'HMK15.jpg',
+                'HMK16.jpg', 'HMK17.jpg', 'HMK18.jpg', 'HMK19.jpg', 'HMK20.jpg', 'HMK21.jpg', 'HMK22.jpg', 'HMK23.jpg',
+                'HMK07296.jpg', 'HMK07332.jpg', 'HMK07371.jpg'
+            ];
+
+            function preloadImages() {
+                const sources = [...new Set([
+                    ...Array.from(document.images, image => image.currentSrc || image.src),
+                    ...imageFiles.map(file => `image/${file}`)
+                ])];
+                const progress = document.querySelector('.loadbar-fill');
+                let loaded = 0;
+                const updateProgress = () => {
+                    loaded += 1;
+                    if (progress) progress.style.width = `${Math.round((loaded / sources.length) * 100)}%`;
+                };
+
+                return Promise.all(sources.map(src => new Promise(resolve => {
+                    const image = new Image();
+                    image.onload = image.onerror = () => {
+                        updateProgress();
+                        resolve();
+                    };
+                    image.src = src;
+                })));
+            }
+
+            const assetsReady = preloadImages();
             let curSong = 0,
                 audio = document.getElementById('audioPlayer'),
                 playing = false;
@@ -353,7 +385,11 @@
                 initFinal();
             }
 
-            const loadTimer = setTimeout(() => { if (cur === 1) goTo(2); }, 3800);
+            const loadTimer = setTimeout(() => {
+                assetsReady.then(() => {
+                    if (cur === 1) goTo(2);
+                });
+            }, 700);
             anim.addTimeout(loadTimer);
 
             // ─── PETALS ──────────────────────────────────────────────────

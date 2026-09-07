@@ -244,7 +244,7 @@
     </div>
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
-        import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-analytics.js";
+        import { getAnalytics, isSupported } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-analytics.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyD29nrojf_z1BtRHhpIWikq7eN26KMSaXY",
@@ -257,7 +257,13 @@
         };
 
         const app = initializeApp(firebaseConfig);
-        getAnalytics(app);
+        isSupported()
+            .then((supported) => {
+                if (supported) getAnalytics(app);
+            })
+            .catch(() => {
+                // Analytics is optional; the love story should still load if it is blocked.
+            });
     </script>
     <script src="script.js"></script>
 </body>
