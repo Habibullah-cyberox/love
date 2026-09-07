@@ -10,8 +10,8 @@
             const isMobile = window.matchMedia('(pointer:coarse)').matches;
             let cur = 1;
             const songs = [
-                { file: "Tum-hi-ho.mp3", title: "Tum Hi Ho", artist: "Arijit Singh" },
-                { file: "Sitaare-lkkis.mp3", title: "Sitaare", artist: "Ikkis" }
+                { file: "audio/Tum-hi-ho.mp3", title: "Tum Hi Ho", artist: "Arijit Singh" },
+                { file: "audio/Sitaare-lkkis.mp3", title: "Sitaare", artist: "Ikkis" }
             ];
             let curSong = 0,
                 audio = document.getElementById('audioPlayer'),
