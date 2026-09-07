@@ -242,6 +242,23 @@
             <div class="final-msg" id="finalMsg"></div>
         </div>
     </div>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-analytics.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyD29nrojf_z1BtRHhpIWikq7eN26KMSaXY",
+            authDomain: "lovestory-39627.firebaseapp.com",
+            projectId: "lovestory-39627",
+            storageBucket: "lovestory-39627.firebasestorage.app",
+            messagingSenderId: "174321107092",
+            appId: "1:174321107092:web:4ecd72071e4fbde296f481",
+            measurementId: "G-GFL0N7W421"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        getAnalytics(app);
+    </script>
     <script src="script.js"></script>
 </body>
 </html>
